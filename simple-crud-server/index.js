@@ -37,6 +37,13 @@ async function run() {
       res.send(result);
     });
 
+    app.get("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const user = await usersCollection.findOne(query);
+      res.send(user);
+    });
+
     //data backend e asar jonno api connection toiri
     app.post("/users", async (req, res) => {
       const user = req.body;
@@ -45,15 +52,30 @@ async function run() {
       res.send(result);
     });
 
-
-app.delete('/users/:id', async (req, res) => {
-  const id = req.params.id;
-  console.log('please delete from database',id);
-  const query = { _id:new ObjectId(id) };
-const result = await usersCollection.deleteOne(query);
+    app.put("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      const user = req.body;
+      console.log(id, user);
+      const filter = {_id: new ObjectId(id)}
+      const options = {upsert: true}
+      const updatedUser = {
+        $set:{
+          name:user.name,
+          email:user.email,
+        }
+      }
+const result = await usersCollection.updateOne(filter, updatedUser,options)
 res.send(result)
-})
 
+    });
+
+    app.delete("/users/:id", async (req, res) => {
+      const id = req.params.id;
+      console.log("please delete from database", id);
+      const query = { _id: new ObjectId(id) };
+      const result = await usersCollection.deleteOne(query);
+      res.send(result);
+    });
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
