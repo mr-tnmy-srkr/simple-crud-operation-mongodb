@@ -10,8 +10,15 @@ app.use(express.json());
 
 // =======================mongodb =============================
 
+
+
 const uri =
   "mongodb+srv://TnmySrkr:A2MKLRE8of6UwUeL@cluster0.cqx0ng3.mongodb.net/?retryWrites=true&w=majority";
+
+
+// or
+
+// const uri = "mongodb://127.0.0.1:27017";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -56,17 +63,20 @@ async function run() {
       const id = req.params.id;
       const user = req.body;
       console.log(id, user);
-      const filter = {_id: new ObjectId(id)}
-      const options = {upsert: true}
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
       const updatedUser = {
-        $set:{
-          name:user.name,
-          email:user.email,
-        }
-      }
-const result = await usersCollection.updateOne(filter, updatedUser,options)
-res.send(result)
-
+        $set: {
+          name: user.name,
+          email: user.email,
+        },
+      };
+      const result = await usersCollection.updateOne(
+        filter,
+        updatedUser,
+        options
+      );
+      res.send(result);
     });
 
     app.delete("/users/:id", async (req, res) => {
