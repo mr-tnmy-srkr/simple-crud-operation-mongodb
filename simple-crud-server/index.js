@@ -28,6 +28,21 @@ async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
+
+ // Connect to the "usersDB" database and access its "usersCollection" collection
+ const database = client.db("usersDB");
+ const usersCollection = database.collection("users");
+
+//data backend e asar jonno api connection toiri
+app.post('/users',async(req,res)=>{
+  const user=req.body;
+  console.log('new user',user);
+  const result = await usersCollection.insertOne(user);
+res.send(result)
+})
+
+
+
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
