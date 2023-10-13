@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const { MongoClient, ServerApiVersion } = require('mongodb');
 const app = express();
 const port = process.env.PORT || 5000;
 
@@ -11,8 +12,8 @@ app.use(express.json())
 
 // =======================mongodb =============================
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
-const uri = "mongodb+srv://TnmySrkr:<password>@cluster0.cqx0ng3.mongodb.net/?retryWrites=true&w=majority";
+
+const uri = "mongodb+srv://TnmySrkr:R2KmGo5Y4FL79xME@cluster0.cqx0ng3.mongodb.net/?retryWrites=true&w=majority";
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 const client = new MongoClient(uri, {
@@ -32,7 +33,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
